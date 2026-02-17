@@ -3,6 +3,7 @@ import { Sandbox } from 'e2b'
 import { SandboxAgent } from 'sandbox-agent'
 
 const SERVER_TOKEN = 'sandbox-agent-e2b-demo-token'
+const KEEP_ALIVE = process.env.KEEP_ALIVE === '1'
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -61,6 +62,34 @@ let client: SandboxAgent | undefined
 try {
   console.log(`E2B sandbox ID: ${sandbox.sandboxId}`)
 
+  if (KEEP_ALIVE) {
+    // If the runtime closes a long-lived connection (SSE/stream), don't crash and
+    // implicitly delete the sandbox. In KEEP_ALIVE mode we want the sandbox to stay up.
+    process.on('unhandledRejection', (error) => {
+      console.error('Unhandled rejection:', error)
+    })
+    process.on('uncaughtException', (error) => {
+      console.error('Uncaught exception:', error)
+    })
+
+    const cleanupAndExit = async (code: number) => {
+      try {
+        if (client) await client.dispose()
+      } catch {
+        // ignore
+      }
+      try {
+        await sandbox.kill()
+      } catch (error) {
+        console.error('Failed to kill sandbox:', error)
+      }
+      process.exit(code)
+    }
+
+    process.once('SIGINT', () => void cleanupAndExit(0))
+    process.once('SIGTERM', () => void cleanupAndExit(0))
+  }
+
   const run = async (command: string) => {
     const result = await sandbox.commands.run(command)
     if (result.exitCode !== 0) {
@@ -100,6 +129,10 @@ try {
   // await session.prompt([{ type: 'text', text: 'Reply with exactly: sandbox-agent-ready' }])
 
   if (process.env.KEEP_ALIVE === '1') {
+    // Close the SDK transport (streams/SSE) but keep the sandbox + server running.
+    // The Inspector UI talks directly to the server URL.
+    await client.dispose()
+    client = undefined
     console.log('KEEP_ALIVE=1 set. Press Ctrl+C to stop and delete the sandbox.')
     // Keep process alive until interrupted so you can open the Inspector URL.
     while (true) {
