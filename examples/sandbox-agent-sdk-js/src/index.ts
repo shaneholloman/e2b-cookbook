@@ -21,7 +21,7 @@ async function main() {
 
 	try {
 		const session = await sdk.createSession({ agent: "claude" });
-		console.log(`Inspector URL: ${sdk.inspectorUrl}sessions/${encodeURIComponent(session.agentSessionId)}`);
+		console.log(`Inspector URL: ${sdk.inspectorUrl}`);
 
 		const response = await session.prompt([
 			{ type: "text", text: "Summarize this repository" },
