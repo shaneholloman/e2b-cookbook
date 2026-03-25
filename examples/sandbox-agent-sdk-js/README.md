@@ -31,12 +31,9 @@ E2B_API_KEY=your_e2b_api_key
 OPENAI_API_KEY=your_openai_api_key
 # CODEX_API_KEY=your_codex_api_key
 # ANTHROPIC_API_KEY=your_anthropic_api_key
-
-# Optional: use a custom E2B template/snapshot alias
-# E2B_TEMPLATE=base
 ```
 
-Provider credential options for other agents: [Sandbox Agent credentials docs](https://sandboxagent.dev/docs/credentials).
+Provider credential options for other agents: [Sandbox Agent credentials docs](https://sandboxagent.dev/docs/llm-credentials).
 
 3. Run:
 
@@ -44,15 +41,7 @@ Provider credential options for other agents: [Sandbox Agent credentials docs](h
 npm run start
 ```
 
-## What the script does
-
-1. Creates an E2B sandbox (from `E2B_TEMPLATE`, default `base`).
-2. Installs `sandbox-agent` CLI and installs an agent.
-3. Starts `sandbox-agent --no-token server`.
-4. Connects with `SandboxAgent.connect(...)` and creates a session.
-5. Prints an Inspector URL.
-
-To run one prompt and stream events, uncomment the block in `src/index.ts`.
+This starts up your Sandbox Agent and connects it to your E2B Sandbox. To run one prompt and stream events, uncomment the block in `src/index.ts`.
 
 ## References
 
