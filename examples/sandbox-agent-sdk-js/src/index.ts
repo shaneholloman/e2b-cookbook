@@ -20,17 +20,19 @@ async function main() {
 	});
 	console.log(`Ready. Visit Sandbox Agent inspector URL: ${sdk.inspectorUrl}`);
 
-	try {
-		// Uncomment to run one prompt and stream events in your terminal.
-		// const session = await sdk.createSession({ agent: "claude" });
-		// const off = session.onEvent((event) => {
-		// 	 console.log(`[event] from ${event.sender}`, event.payload);
-		// })
-		// await session.prompt([{ type: 'text', text: 'Reply with exactly: sandbox-agent-ready' }])
-		// off()
-	} finally {
+	// Uncomment to run one prompt and stream events in your terminal.
+	// const session = await sdk.createSession({ agent: "claude" });
+	// const off = session.onEvent((event) => {
+	// 	 console.log(`[event] from ${event.sender}`, event.payload);
+	// })
+	// await session.prompt([{ type: 'text', text: 'Reply with exactly: sandbox-agent-ready' }])
+	// off()
+
+	process.on("SIGINT", async () => {
+		console.log("Destroying sandbox");
 		await sdk.destroySandbox();
-	}
+		process.exit();
+	});
 }
 
 main();
