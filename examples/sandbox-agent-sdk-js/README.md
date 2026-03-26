@@ -47,4 +47,4 @@ This starts up your Sandbox Agent and connects it to your E2B Sandbox. To run on
 - [Sandbox Agent SDK docs](https://sandboxagent.dev/docs/sdk-overview)
 - [Sandbox Agent session persistence](https://sandboxagent.dev/docs/session-persistence)
 - [Sandbox Agent credentials](https://sandboxagent.dev/docs/credentials)
-- [E2B AMP guide](https://e2b.dev/docs/agents/amp)
+- [E2B Sandbox Agent SDK guide](https://e2b.dev/docs/agents/sandbox-agent-sdk)
