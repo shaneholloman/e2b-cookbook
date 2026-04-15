@@ -1,4 +1,4 @@
-# E2B Notebooks
+# OpenAI Agents SDK E2B Notebooks
 
 This folder contains Jupyter notebook walkthroughs for the E2B sandbox examples.
 
